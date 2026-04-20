@@ -1,23 +1,21 @@
-let total = 0;
+let total=0;
 
-// TOTAL
 document.addEventListener("DOMContentLoaded",()=>{
  document.querySelectorAll("input[type=checkbox]").forEach(cb=>{
   cb.addEventListener("change",()=>{
-   total = 0;
+   total=0;
    document.querySelectorAll("input[type=checkbox]:checked")
-   .forEach(c=> total += Number(c.dataset.price));
+   .forEach(c=> total+=Number(c.dataset.price));
 
-   document.getElementById("total").innerHTML = "Total: &#8377;" + total;
+   document.getElementById("total").innerHTML="Total: &#8377;"+total;
   });
  });
 });
 
-// PAYMENT
 function pay(){
 
- let name = document.getElementById("name").value;
- let date = document.getElementById("date").value;
+ let name=document.getElementById("name").value;
+ let date=document.getElementById("date").value;
 
  let events=[];
  document.querySelectorAll("input[type=checkbox]:checked")
@@ -29,8 +27,9 @@ function pay(){
  }
 
  var options={
-  key:"rzp_test_Sffv2QbuAaeRAU",
+  key:"YOUR_RAZORPAY_KEY",
   amount:50000,
+  currency:"INR",
 
   handler:function(res){
 
@@ -51,18 +50,4 @@ function pay(){
  };
 
  new Razorpay(options).open();
-}
-
-// MENU
-function toggleMenu(){
- let m=document.getElementById("menu");
- m.style.display = m.style.display=="block"?"none":"block";
-}
-
-function goDashboard(){ location="dashboard.html"; }
-function goSlip(){ location="slip.html"; }
-
-function logout(){
- localStorage.clear();
- location="index.html";
 }
