@@ -1,19 +1,95 @@
 <!DOCTYPE html>
 <html>
-<body style="color:white;background:#222;text-align:center;">
+<head>
+<meta charset="UTF-8">
+<title>Payment Slip</title>
 
-<h2>🧾 Receipt</h2>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body{
+ margin:0;
+ font-family:Arial;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ color:white;
+ text-align:center;
+}
+
+.card{
+ margin:30px;
+ padding:20px;
+ border-radius:20px;
+ backdrop-filter:blur(15px);
+ background:rgba(255,255,255,0.1);
+ border:1px solid rgba(255,255,255,0.2);
+}
+
+button{
+ width:90%;
+ padding:12px;
+ margin:5px;
+ border:none;
+ border-radius:10px;
+ background:rgba(0,255,100,0.5);
+ color:white;
+ font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div id="slip" class="card">
+<h2>🧾 Payment Receipt</h2>
 <p id="data"></p>
+</div>
+
+<button onclick="downloadPDF()">📄 Download PDF</button>
+<button onclick="sendWhatsApp()">📲 WhatsApp</button>
 
 <script>
-let b=JSON.parse(localStorage.getItem("booking"));
+let b = JSON.parse(localStorage.getItem("booking"));
 
-data.innerHTML=`
-Name:${b.name}<br>
-Events:${b.events.join(", ")}<br>
-₹${b.total}<br>
-ID:${b.payment_id}
+// Show data
+let eventText = b.events.join(", ");
+
+document.getElementById("data").innerHTML = `
+Name: ${b.name}<br><br>
+Events: ${eventText}<br><br>
+Total: ₹${b.total}<br><br>
+Payment ID: ${b.payment_id}<br><br>
+Time: ${b.time}
 `;
+
+// 📄 PDF FUNCTION
+function downloadPDF(){
+ const { jsPDF } = window.jspdf;
+ let doc = new jsPDF();
+
+ doc.setFontSize(16);
+ doc.text("Payment Receipt", 20, 20);
+
+ doc.setFontSize(12);
+ doc.text("Name: " + b.name, 20, 40);
+ doc.text("Events: " + eventText, 20, 50);
+ doc.text("Total: ₹" + b.total, 20, 60);
+ doc.text("Payment ID: " + b.payment_id, 20, 70);
+ doc.text("Time: " + b.time, 20, 80);
+
+ doc.save("receipt.pdf");
+}
+
+// 📲 WHATSAPP FUNCTION
+function sendWhatsApp(){
+ let msg = `📸 Booking Confirmed
+Name: ${b.name}
+Events: ${eventText}
+Total: ₹${b.total}
+Payment ID: ${b.payment_id}`;
+
+ let url = "https://wa.me/?text=" + encodeURIComponent(msg);
+ window.open(url, "_blank");
+}
 </script>
 
 </body>
