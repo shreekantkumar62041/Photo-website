@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Glass Booking App</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="app.js" defer></script>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<!-- MENU -->
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div id="menu" class="menu glass">
+<button onclick="goDashboard()">📊 Dashboard</button>
+<button onclick="goSlip()">🧾 Slip</button>
+<button onclick="logout()">🔐 Logout</button>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card glass">
+
+<h2>📸 Glass Booking</h2>
+
+<div class="grid">
+
+<label class="box glass">
+<input type="checkbox" data-price="5000" value="Wedding">
+<div class="content">
+<div class="icon">💍</div>
+<div>Wedding</div>
+<div>&#8377;5000</div>
+</div>
+</label>
+
+<label class="box glass">
+<input type="checkbox" data-price="2000" value="Birthday">
+<div class="content">
+<div class="icon">🎂</div>
+<div>Birthday</div>
+<div>&#8377;2000</div>
+</div>
+</label>
+
+<label class="box glass">
+<input type="checkbox" data-price="3000" value="Party">
+<div class="content">
+<div class="icon">🎉</div>
+<div>Party</div>
+<div>&#8377;3000</div>
+</div>
+</label>
+
+<label class="box glass">
+<input type="checkbox" data-price="6000" value="Pre-Wedding">
+<div class="content">
+<div class="icon">📸</div>
+<div>Pre-Wedding</div>
+<div>&#8377;6000</div>
+</div>
+</label>
+
+</div>
+
+<input id="name" placeholder="Your Name">
+<input id="date" type="date">
+
+<h3 id="total">Total: &#8377;0</h3>
+
+<button onclick="pay()">Book & Pay</button>
+</div>
+</body>
+</html>

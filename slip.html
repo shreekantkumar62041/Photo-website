@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body style="color:white;background:#222;text-align:center;">
+
+<h2>🧾 Receipt</h2>
+<p id="data"></p>
+
+<script>
+let b=JSON.parse(localStorage.getItem("booking"));
+
+data.innerHTML=`
+Name:${b.name}<br>
+Events:${b.events.join(", ")}<br>
+₹${b.total}<br>
+ID:${b.payment_id}
+`;
+</script>
+
+</body>
+</html>

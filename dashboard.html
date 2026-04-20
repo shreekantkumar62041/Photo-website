@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body style="color:white;background:#222;text-align:center;">
+
+<h2>📊 Dashboard</h2>
+<div id="list"></div>
+
+<script>
+let data=JSON.parse(localStorage.getItem("history"))||[];
+
+let html="";
+data.forEach((b,i)=>{
+ html+=`
+ <div style="background:#333;margin:10px;padding:10px;">
+ ${b.name}<br>
+ ${b.events.join(", ")}<br>
+ ₹${b.total}<br>
+ <button onclick="del(${i})">Delete</button>
+ </div>
+ `;
+});
+
+list.innerHTML=html;
+
+function del(i){
+ data.splice(i,1);
+ localStorage.setItem("history",JSON.stringify(data));
+ location.reload();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+body{
+ margin:0;
+ font-family:Arial;
+ color:white;
+ text-align:center;
+}
+
+/* BACKGROUND */
+.bg{
+ position:fixed;
+ width:100%;
+ height:100%;
+ background:linear-gradient(135deg,#667eea,#764ba2);
+ z-index:-1;
+}
+
+/* GLASS */
+.glass{
+ backdrop-filter:blur(15px);
+ background:rgba(255,255,255,0.1);
+ border:1px solid rgba(255,255,255,0.2);
+ border-radius:20px;
+ box-shadow:0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* CARD */
+.card{
+ width:90%;
+ margin:50px auto;
+ padding:20px;
+}
+
+/* GRID */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+}
+
+/* BOX */
+.box{
+ padding:15px;
+ cursor:pointer;
+ transition:0.3s;
+}
+
+.box:hover{
+ transform:scale(1.05);
+}
+
+.box input{
+ display:none;
+}
+
+.box input:checked + .content{
+ background:rgba(0,255,100,0.3);
+ border-radius:15px;
+}
+
+/* CONTENT */
+.icon{
+ font-size:30px;
+}
+
+/* INPUT */
+input{
+ width:90%;
+ padding:10px;
+ margin:10px 0;
+ border:none;
+ border-radius:10px;
+ background:rgba(255,255,255,0.2);
+ color:white;
+}
+
+/* BUTTON */
+button{
+ width:90%;
+ padding:12px;
+ border:none;
+ border-radius:10px;
+ background:rgba(0,255,100,0.5);
+ color:white;
+}
+
+/* MENU */
+.menu-btn{
+ position:fixed;
+ top:10px;
+ right:10px;
+ background:#000;
+ padding:10px;
+ border-radius:10px;
+}
+
+.menu{
+ display:none;
+ position:fixed;
+ top:50px;
+ right:10px;
+ padding:10px;
+}
