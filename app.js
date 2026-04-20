@@ -29,7 +29,7 @@ function pay(){
  }
 
  var options={
-  key:"YOUR_RAZORPAY_KEY",
+  key:"rzp_test_Sffv2QbuAaeRAU",
   amount:50000,
 
   handler:function(res){
