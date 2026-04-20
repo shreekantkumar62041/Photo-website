@@ -2,51 +2,118 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Payment Receipt</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
 
-<body style="background:#111;color:white;text-align:center;">
-
-<h2>🧾 Receipt</h2>
-<p id="data"></p>
-
-<button onclick="pdf()">PDF</button>
-<button onclick="wa()">WhatsApp</button>
-
-<script>
-let b=JSON.parse(localStorage.getItem("booking"));
-let events=b.events.join(", ");
-
-data.innerHTML=`
-${b.name}<br>
-${events}<br>
-₹${b.total}<br>
-${b.payment_id}
-`;
-
-function pdf(){
- let {jsPDF}=window.jspdf;
- let doc=new jsPDF();
-
- let img=new Image();
- img.src="logo.png";
-
- img.onload=function(){
-  doc.addImage(img,"PNG",80,10,40,20);
-  doc.text("Receipt",80,40);
-  doc.text("Name:"+b.name,20,60);
-  doc.text("Events:"+events,20,70);
-  doc.text("₹"+b.total,20,80);
-  doc.save("receipt.pdf");
- };
+<style>
+body{
+ margin:0;
+ font-family:'Segoe UI',sans-serif;
+ background:#0f172a;
+ color:white;
+ text-align:center;
 }
 
-function wa(){
- let msg=`Booking Confirmed
-${b.name}
-${events}
-₹${b.total}`;
- window.open("https://wa.me/?text="+encodeURIComponent(msg));
+/* CARD */
+.card{
+ margin:20px;
+ padding:20px;
+ border-radius:15px;
+ background:#1e293b;
+ box-shadow:0 8px 20px rgba(0,0,0,0.5);
+ text-align:left;
+}
+
+/* HEADER */
+.header{
+ text-align:center;
+ margin-bottom:15px;
+}
+
+/* BUTTON */
+button{
+ width:90%;
+ padding:12px;
+ margin:6px;
+ border:none;
+ border-radius:10px;
+ background:#22c55e;
+ color:white;
+ font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="slip">
+
+<div class="header">
+<img src="logo.png" width="120"><br>
+<h2>Payment Receipt</h2>
+</div>
+
+<div id="data"></div>
+
+</div>
+
+<button onclick="downloadPDF()">📄 Download PDF</button>
+<button onclick="sendWhatsApp()">📲 WhatsApp</button>
+
+<script>
+let b = JSON.parse(localStorage.getItem("booking") || "{}");
+
+if(!b.name){
+ document.getElementById("data").innerHTML = "No data found";
+}
+
+// SAFE EVENT TEXT
+let eventText = (b.events || []).join(", ");
+
+// DISPLAY
+document.getElementById("data").innerHTML = `
+<b>Name:</b> ${b.name}<br><br>
+<b>Date:</b> ${b.date}<br><br>
+<b>Events:</b> ${eventText}<br><br>
+<b>Total:</b> ₹${b.total}<br><br>
+<b>Payment ID:</b> ${b.payment_id}<br><br>
+<b>Time:</b> ${b.time}
+`;
+
+// ✅ PDF (NO ERROR VERSION)
+function downloadPDF(){
+ const { jsPDF } = window.jspdf;
+ let doc = new jsPDF();
+
+ doc.setFont("Helvetica","normal");
+
+ doc.setFontSize(16);
+ doc.text("Payment Receipt", 70, 20);
+
+ doc.setFontSize(12);
+
+ doc.text("Name: " + b.name, 20, 40);
+ doc.text("Date: " + b.date, 20, 50);
+ doc.text("Events: " + eventText, 20, 60);
+ doc.text("Total: Rs " + b.total, 20, 70);  // ✅ safe ₹
+ doc.text("Payment ID: " + b.payment_id, 20, 80);
+ doc.text("Time: " + b.time, 20, 90);
+
+ doc.save("receipt.pdf");
+}
+
+// ✅ WhatsApp
+function sendWhatsApp(){
+ let msg = `📸 Booking Confirmed
+
+Name: ${b.name}
+Date: ${b.date}
+Events: ${eventText}
+Total: Rs ${b.total}
+Payment ID: ${b.payment_id}`;
+
+ window.open("https://wa.me/?text=" + encodeURIComponent(msg));
 }
 </script>
 
