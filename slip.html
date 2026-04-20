@@ -2,43 +2,65 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Payment Receipt</title>
+<title>Professional Receipt</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body{
- margin:0;
  font-family:'Segoe UI',sans-serif;
- background:#0f172a;
- color:white;
- text-align:center;
+ background:#f4f6f9;
+ margin:0;
 }
 
-/* CARD */
-.card{
- margin:20px;
+.container{
+ max-width:400px;
+ margin:20px auto;
+ background:white;
  padding:20px;
- border-radius:15px;
- background:#1e293b;
- box-shadow:0 8px 20px rgba(0,0,0,0.5);
- text-align:left;
+ border-radius:12px;
+ box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* HEADER */
 .header{
  text-align:center;
- margin-bottom:15px;
+ border-bottom:1px solid #ddd;
+ padding-bottom:10px;
 }
 
-/* BUTTON */
+.header img{
+ width:80px;
+}
+
+.title{
+ font-weight:bold;
+ font-size:18px;
+ margin-top:5px;
+}
+
+.table{
+ width:100%;
+ margin-top:15px;
+ border-collapse:collapse;
+}
+
+.table td{
+ padding:8px;
+ border-bottom:1px solid #eee;
+}
+
+.total{
+ font-weight:bold;
+ font-size:16px;
+}
+
 button{
- width:90%;
+ width:100%;
  padding:12px;
- margin:6px;
+ margin-top:10px;
  border:none;
  border-radius:10px;
- background:#22c55e;
+ background:#28a745;
  color:white;
  font-weight:bold;
 }
@@ -47,14 +69,14 @@ button{
 
 <body>
 
-<div class="card" id="slip">
+<div class="container" id="slip">
 
 <div class="header">
-<img src="logo.png" width="120"><br>
-<h2>Payment Receipt</h2>
+<img src="logo.png">
+<div class="title">Photo Booking Service</div>
 </div>
 
-<div id="data"></div>
+<table class="table" id="data"></table>
 
 </div>
 
@@ -64,52 +86,48 @@ button{
 <script>
 let b = JSON.parse(localStorage.getItem("booking") || "{}");
 
-if(!b.name){
- document.getElementById("data").innerHTML = "No data found";
-}
+// SAFE EVENTS
+let events = (b.events || []).join(", ");
 
-// SAFE EVENT TEXT
-let eventText = (b.events || []).join(", ");
-
-// DISPLAY
+// DISPLAY TABLE
 document.getElementById("data").innerHTML = `
-<b>Name:</b> ${b.name}<br><br>
-<b>Date:</b> ${b.date}<br><br>
-<b>Events:</b> ${eventText}<br><br>
-<b>Total:</b> ₹${b.total}<br><br>
-<b>Payment ID:</b> ${b.payment_id}<br><br>
-<b>Time:</b> ${b.time}
+<tr><td>Name</td><td>${b.name}</td></tr>
+<tr><td>Date</td><td>${b.date}</td></tr>
+<tr><td>Events</td><td>${events}</td></tr>
+<tr><td>Payment ID</td><td>${b.payment_id}</td></tr>
+<tr><td>Time</td><td>${b.time}</td></tr>
+<tr class="total"><td>Total</td><td>₹${b.total}</td></tr>
 `;
 
-// ✅ PDF (NO ERROR VERSION)
+// 📄 PDF (PRO STYLE)
 function downloadPDF(){
  const { jsPDF } = window.jspdf;
  let doc = new jsPDF();
 
- doc.setFont("Helvetica","normal");
-
- doc.setFontSize(16);
- doc.text("Payment Receipt", 70, 20);
+ doc.setFontSize(18);
+ doc.text("Payment Receipt", 60, 20);
 
  doc.setFontSize(12);
 
  doc.text("Name: " + b.name, 20, 40);
  doc.text("Date: " + b.date, 20, 50);
- doc.text("Events: " + eventText, 20, 60);
- doc.text("Total: Rs " + b.total, 20, 70);  // ✅ safe ₹
- doc.text("Payment ID: " + b.payment_id, 20, 80);
- doc.text("Time: " + b.time, 20, 90);
+ doc.text("Events: " + events, 20, 60);
+ doc.text("Payment ID: " + b.payment_id, 20, 70);
+ doc.text("Total: Rs " + b.total, 20, 80);
+
+ doc.setDrawColor(0);
+ doc.rect(10, 30, 190, 60);
 
  doc.save("receipt.pdf");
 }
 
-// ✅ WhatsApp
+// 📲 WhatsApp
 function sendWhatsApp(){
- let msg = `📸 Booking Confirmed
+ let msg = `📸 Photo Booking Receipt
 
 Name: ${b.name}
 Date: ${b.date}
-Events: ${eventText}
+Events: ${events}
 Total: Rs ${b.total}
 Payment ID: ${b.payment_id}`;
 
