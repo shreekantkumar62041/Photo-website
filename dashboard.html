@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<body style="background:#222;color:white;text-align:center;">
+<body style="background:#111;color:white;text-align:center;">
 
-<h2>📊 Dashboard</h2>
+<h2>Dashboard</h2>
 <div id="list"></div>
 
 <script>
@@ -11,7 +11,7 @@ let data=JSON.parse(localStorage.getItem("history"))||[];
 let html="";
 data.forEach((b,i)=>{
  html+=`
- <div style="background:#333;margin:10px;padding:10px;">
+ <div style="background:#222;margin:10px;padding:10px;">
  ${b.name}<br>
  ${b.events.join(", ")}<br>
  ₹${b.total}<br>
