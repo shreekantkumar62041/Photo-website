@@ -5,27 +5,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
-<body style="background:#222;color:white;text-align:center;">
+<body style="background:#111;color:white;text-align:center;">
 
 <h2>🧾 Receipt</h2>
 <p id="data"></p>
 
-<button onclick="pdf()">📄 PDF</button>
-<button onclick="wa()">📲 WhatsApp</button>
+<button onclick="pdf()">PDF</button>
+<button onclick="wa()">WhatsApp</button>
 
 <script>
 let b=JSON.parse(localStorage.getItem("booking"));
 let events=b.events.join(", ");
 
 data.innerHTML=`
-Name:${b.name}<br>
-Events:${events}<br>
+${b.name}<br>
+${events}<br>
 ₹${b.total}<br>
-ID:${b.payment_id}
+${b.payment_id}
 `;
 
 function pdf(){
-
  let {jsPDF}=window.jspdf;
  let doc=new jsPDF();
 
@@ -33,15 +32,11 @@ function pdf(){
  img.src="logo.png";
 
  img.onload=function(){
-
-  doc.addImage(img,"PNG",80,10,50,20);
-
-  doc.text("Payment Receipt",70,40);
+  doc.addImage(img,"PNG",80,10,40,20);
+  doc.text("Receipt",80,40);
   doc.text("Name:"+b.name,20,60);
   doc.text("Events:"+events,20,70);
-  doc.text("Total: ₹"+b.total,20,80);
-  doc.text("Payment ID:"+b.payment_id,20,90);
-
+  doc.text("₹"+b.total,20,80);
   doc.save("receipt.pdf");
  };
 }
