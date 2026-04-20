@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded",()=>{
    document.querySelectorAll("input[type=checkbox]:checked")
    .forEach(c=> total+=Number(c.dataset.price));
 
-   document.getElementById("total").innerHTML="Total: &#8377;"+total;
+   document.getElementById("total").innerHTML="Total: ₹"+total;
   });
  });
 });
@@ -22,12 +22,12 @@ function pay(){
  .forEach(c=>events.push(c.value));
 
  if(!name || !date || events.length==0){
-  alert("Fill details");
+  alert("Please fill all details");
   return;
  }
 
  var options={
-  key:"rzp_test_Sffv2QbuAaeRAU",
+  key:"YOUR_RAZORPAY_KEY",
   amount:50000,
   currency:"INR",
 
