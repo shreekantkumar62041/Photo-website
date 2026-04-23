@@ -27,7 +27,7 @@ function pay(){
  }
 
  var options={
-  key:"rzp_test_Sffv2QbuAaeRAU",
+  key:"udlT0d23iCuReCVVHg2qYUo6",
   amount:50000,
   currency:"INR",
 
