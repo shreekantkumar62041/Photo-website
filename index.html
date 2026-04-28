@@ -1,61 +1,225 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Photo Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.k photo garafi</title>
 
-<link rel="stylesheet" href="style.css">
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="app.js" defer></script>
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.saveBooking = async function () {
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const date = document.getElementById("date").value;
+  const service = document.getElementById("service").value;
+  const details = document.getElementById("details").value;
+
+  await addDoc(collection(db, "bookings"), {
+    name, phone, date, service, details,
+    time: new Date().toLocaleString()
+  });
+
+  const msg =
+`New Booking
+Name: ${name}
+Phone: ${phone}
+Date: ${date}
+Service: ${service}
+Details: ${details}`;
+
+  window.open(
+   `https://wa.me/916205693707?text=${encodeURIComponent(msg)}`,
+   "_blank"
+  );
+
+  alert("Booking Submitted Successfully");
+}
+</script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#111,#1f1f3d,#142f2f);
+color:white;
+}
+
+header{
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#ff4fd8;
+}
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:10px;
+background:#ff4fd8;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.hero{
+padding:70px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-size:52px;
+margin-bottom:15px;
+}
+
+.hero p{
+color:#ddd;
+max-width:700px;
+margin:auto;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
+padding:30px;
+}
+
+.card{
+height:240px;
+border-radius:20px;
+background:#1b1b1b;
+overflow:hidden;
+}
+
+.card img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+section{
+padding:50px 20px;
+}
+
+input,select,textarea{
+width:100%;
+max-width:500px;
+padding:14px;
+margin:10px auto;
+display:block;
+border:none;
+border-radius:10px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#aaa;
+}
+</style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<header>
+<div class="logo">🎨 S.k</div>
+<button onclick="document.getElementById('booking').scrollIntoView()">Book Now</button>
+</header>
 
-<div class="header glass">
-  <h2>📸 Photo Booking</h2>
-  <p>Professional Service</p>
-</div>
+<section class="hero">
+<h1>Capture Your Colorful Memories</h1>
+<p>
+Wedding • Birthday • Pre Wedding • Event • Video Shoot • Album Design
+</p>
+</section>
 
-<div class="card glass">
-
-<h3>Select Event</h3>
-
+<section>
+<h2 align="center">Gallery</h2>
 <div class="grid">
 
-<label class="box">
-<input type="checkbox" data-price="5000" value="Wedding">
-<div class="content">💍<br>Wedding<br>&#8377;5000</div>
-</label>
-
-<label class="box">
-<input type="checkbox" data-price="2000" value="Birthday">
-<div class="content">🎂<br>Birthday<br>&#8377;2000</div>
-</label>
-
-<label class="box">
-<input type="checkbox" data-price="3000" value="Party">
-<div class="content">🎉<br>Party<br>&#8377;3000</div>
-</label>
-
-<label class="box">
-<input type="checkbox" data-price="6000" value="Pre-Wedding">
-<div class="content">📸<br>Pre-Wedding<br>&#8377;6000</div>
-</label>
-
+<div class="card">
+<img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800">
 </div>
 
-<input id="name" placeholder="Full Name">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800">
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800">
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800">
+</div>
+
+</div>
+</section>
+
+<section id="booking">
+<h2 align="center">Book Now</h2>
+
+<input id="name" placeholder="Your Name">
+<input id="phone" placeholder="Phone Number">
 <input id="date" type="date">
 
-<h2 id="total">Total: &#8377;0</h2>
+<select id="service">
+<option>Wedding Shoot</option>
+<option>Birthday Shoot</option>
+<option>Pre Wedding</option>
+<option>Event Shoot</option>
+<option>Video Shoot</option>
+</select>
 
-<button class="primary" onclick="pay()">Book & Pay</button>
-<a href="dashboard.html"><button class="secondary">Dashboard</button></a>
+<textarea id="details" rows="5" placeholder="Extra Details"></textarea>
 
-</div>
+<center>
+<button onclick="saveBooking()">Confirm Booking</button>
+</center>
+</section>
+
+<section>
+<h2 align="center">Contact</h2>
+<p align="center">
+📞 6205693707 <br>
+📧 shreekant6205693@gmail.com <br>
+📍 Patna,Bihar,804451
+</p>
+</section>
+
+<footer>
+© 2026 S.k photo garafi
+</footer>
 
 </body>
 </html>
